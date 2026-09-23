@@ -1,0 +1,1178 @@
+
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CareSight AI — Project Documentation</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #1f2328;
+    background: #f7f8fa;
+  }
+  .page { max-width: 860px; margin: 0 auto; background: #fff; }
+
+  /* ── Cover ── */
+  .cover {
+    background: linear-gradient(160deg, #0a2342 0%, #1a3a5c 55%, #1e5799 100%);
+    color: #fff;
+    padding: 56px 48px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::after {
+    content: "";
+    position: absolute;
+    right: -60px; top: -60px;
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .cover-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.22);
+    color: #93c5fd;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 18px;
+  }
+  .cover h1 {
+    font-size: 38px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin-bottom: 6px;
+  }
+  .cover h1 span { color: #60a5fa; }
+  .cover-tagline {
+    font-size: 15px;
+    color: #bfdbfe;
+    font-style: italic;
+    margin-bottom: 28px;
+  }
+  .cover-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 24px;
+  }
+  .cover-chip {
+    background: rgba(255,255,255,0.10);
+    border: 1px solid rgba(255,255,255,0.18);
+    color: #e0f2fe;
+    font-size: 12px;
+    padding: 5px 14px;
+    border-radius: 20px;
+  }
+  .cover-chip strong { color: #fff; }
+
+  /* ── Body sections ── */
+  .body { padding: 0 48px 48px; }
+
+  .section { margin-top: 42px; }
+  .section-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #0a2342;
+    border-left: 4px solid #1e5799;
+    padding-left: 12px;
+    margin-bottom: 16px;
+  }
+  .section-title .num {
+    display: inline-block;
+    background: #1e5799;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+
+  p { margin-bottom: 10px; color: #374151; }
+
+  /* ── KPIs ── */
+  .kpi-row { display: flex; gap: 12px; flex-wrap: wrap; margin: 18px 0; }
+  .kpi-card {
+    flex: 1; min-width: 130px;
+    background: #f0f4ff;
+    border-left: 4px solid #1e5799;
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+  .kpi-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: #6b7280; }
+  .kpi-value { font-size: 22px; font-weight: 800; color: #0a2342; margin-top: 2px; }
+  .kpi-sub { font-size: 11px; color: #9ca3af; margin-top: 1px; }
+
+  /* ── Tables ── */
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 14px 0; }
+  thead tr { background: #0a2342; color: #fff; }
+  thead th { padding: 9px 12px; text-align: left; font-weight: 600; }
+  tbody tr:nth-child(even) { background: #f7f8fa; }
+  tbody tr:hover { background: #eff6ff; }
+  tbody td { padding: 8px 12px; border-bottom: 1px solid #e5e7eb; color: #374151; }
+  tbody td:first-child { font-weight: 600; color: #1f2328; }
+
+  /* ── Code / mono ── */
+  code {
+    font-family: "Cascadia Code", "Fira Mono", Consolas, monospace;
+    background: #f0f4f8;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 12px;
+    color: #1e5799;
+  }
+  pre {
+    background: #0f172a;
+    color: #e2e8f0;
+    border-radius: 8px;
+    padding: 18px 20px;
+    font-family: "Cascadia Code", "Fira Mono", Consolas, monospace;
+    font-size: 12px;
+    line-height: 1.7;
+    overflow-x: auto;
+    margin: 14px 0;
+  }
+  pre .c { color: #64748b; }
+  pre .k { color: #60a5fa; }
+  pre .s { color: #34d399; }
+  pre .n { color: #f9a8d4; }
+
+  /* ── Bullets ── */
+  ul, ol { padding-left: 20px; margin: 10px 0; color: #374151; }
+  li { margin-bottom: 5px; }
+
+  /* ── Info / warning boxes ── */
+  .box {
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-size: 13px;
+    margin: 14px 0;
+  }
+  .box-blue  { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; }
+  .box-yellow{ background: #fffbeb; border: 1px solid #fcd34d; color: #78350f; }
+  .box-green { background: #f0fdf4; border: 1px solid #86efac; color: #14532d; }
+  .box-red   { background: #fff1f2; border: 1px solid #fca5a5; color: #7f1d1d; }
+  .box strong { font-weight: 700; }
+
+  /* ── Two-col grid ── */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 14px 0; }
+  .card {
+    background: #f7f8fa;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 16px;
+  }
+  .card h4 { font-size: 13px; font-weight: 700; color: #0a2342; margin-bottom: 8px; }
+
+  /* ── Workflow ── */
+  .workflow {
+    background: #0f172a;
+    border-radius: 10px;
+    padding: 22px 24px;
+    font-family: "Cascadia Code", "Fira Mono", Consolas, monospace;
+    font-size: 12px;
+    color: #e2e8f0;
+    line-height: 1.9;
+    margin: 14px 0;
+  }
+  .workflow .step { color: #60a5fa; font-weight: 700; }
+  .workflow .sub  { color: #94a3b8; }
+  .workflow .arrow{ color: #f9a8d4; }
+
+  /* ── Page badges ── */
+  .page-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    color: #1e40af;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin: 4px 4px 4px 0;
+  }
+
+  /* ── Screenshot mock ── */
+  .screenshot-block {
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 20px 0;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  }
+  .screenshot-titlebar {
+    background: linear-gradient(90deg, #0a2342, #1e5799);
+    color: #fff;
+    padding: 9px 16px;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .screenshot-note {
+    background: #f7f8fa;
+    border-top: 1px solid #e5e7eb;
+    padding: 10px 16px;
+    font-size: 12px;
+    color: #57606a;
+    font-style: italic;
+  }
+  .screenshot-body {
+    background: #f0f4f8;
+    min-height: 52px;
+    padding: 14px 16px;
+  }
+  .mock-kpi-row { display: flex; gap: 8px; margin-bottom: 12px; }
+  .mock-kpi {
+    flex: 1;
+    background: #fff;
+    border-left: 3px solid #1e5799;
+    border-radius: 6px;
+    padding: 8px 10px;
+  }
+  .mock-kpi-label { font-size: 9px; font-weight: 700; text-transform: uppercase; color: #9ca3af; }
+  .mock-kpi-val { font-size: 16px; font-weight: 800; color: #0a2342; }
+  .mock-charts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .mock-chart {
+    background: #fff;
+    border-radius: 6px;
+    padding: 10px 12px;
+    height: 70px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .mock-chart-title { font-size: 10px; font-weight: 700; color: #374151; }
+  .mock-bars { display: flex; align-items: flex-end; gap: 3px; height: 36px; }
+  .mock-bar { border-radius: 2px 2px 0 0; }
+  .mock-donut {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    border: 10px solid #1e5799;
+    margin: auto;
+    position: relative;
+  }
+  .mock-line { width: 100%; height: 32px; position: relative; margin-top: 4px; }
+  .mock-line svg { width: 100%; height: 100%; }
+
+  /* sidebar mock */
+  .mock-app { display: flex; border-radius: 8px; overflow: hidden; border: 1px solid #e5e7eb; }
+  .mock-sidebar {
+    width: 120px;
+    background: linear-gradient(180deg, #0a2342 0%, #1e5799 100%);
+    padding: 12px 10px;
+    flex-shrink: 0;
+  }
+  .mock-sidebar-title { font-size: 11px; font-weight: 800; color: #e8f0fe; text-align: center; margin-bottom: 10px; }
+  .mock-nav-item {
+    font-size: 10px;
+    color: #93c5fd;
+    padding: 4px 6px;
+    border-radius: 4px;
+    margin-bottom: 3px;
+  }
+  .mock-nav-item.active { background: rgba(255,255,255,0.15); color: #fff; font-weight: 700; }
+  .mock-main { flex: 1; padding: 12px; background: #f0f4f8; }
+
+  /* filter mock */
+  .mock-filters { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .mock-filter {
+    background: #fff;
+    border: 1px solid #d1d5db;
+    border-radius: 5px;
+    padding: 4px 10px;
+    font-size: 10px;
+    color: #374151;
+  }
+
+  /* form mock */
+  .mock-form { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 10px; }
+  .mock-field { background: #fff; border: 1px solid #d1d5db; border-radius: 5px; padding: 5px 8px; }
+  .mock-field-label { font-size: 9px; color: #9ca3af; }
+  .mock-field-val { font-size: 11px; color: #1f2328; font-weight: 600; }
+  .mock-btn {
+    background: #1e5799;
+    color: #fff;
+    text-align: center;
+    padding: 7px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .mock-pred-row { display: flex; gap: 8px; }
+  .mock-pred {
+    flex: 1;
+    background: #fff;
+    border-radius: 6px;
+    padding: 10px;
+    border-left: 4px solid;
+  }
+  .mock-pred.yes { border-color: #e74c3c; }
+  .mock-pred.no  { border-color: #27ae60; }
+  .mock-pred-model { font-size: 9px; color: #9ca3af; font-weight: 700; text-transform: uppercase; }
+  .mock-pred-label { font-size: 13px; font-weight: 800; margin: 3px 0; }
+  .mock-pred.yes .mock-pred-label { color: #e74c3c; }
+  .mock-pred.no  .mock-pred-label { color: #27ae60; }
+  .mock-pred-prob { font-size: 10px; color: #374151; }
+
+  /* confusion mock */
+  .mock-cm { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; width: 80px; }
+  .mock-cm-cell {
+    width: 36px; height: 32px;
+    border-radius: 3px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 800; color: #fff;
+  }
+
+  /* divider */
+  hr { border: none; border-top: 1px solid #e5e7eb; margin: 32px 0; }
+
+  /* tags */
+  .tag {
+    display: inline-block;
+    background: #eff6ff;
+    color: #1e40af;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 10px;
+    border-radius: 12px;
+    margin: 2px 2px 2px 0;
+  }
+  .tag.green { background: #f0fdf4; color: #14532d; }
+  .tag.orange{ background: #fff7ed; color: #7c2d12; }
+  .tag.purple{ background: #faf5ff; color: #581c87; }
+
+  /* reference list */
+  .ref-list { list-style: none; padding: 0; }
+  .ref-list li { padding: 6px 0; border-bottom: 1px solid #f0f0f0; font-size: 13px; color: #57606a; }
+  .ref-list li:last-child { border-bottom: none; }
+  .ref-num { display: inline-block; width: 22px; font-weight: 700; color: #1e5799; }
+
+  /* footer */
+  .doc-footer {
+    text-align: center;
+    font-size: 11px;
+    color: #9ca3af;
+    padding: 22px 0 18px;
+    border-top: 1px solid #e5e7eb;
+    margin-top: 48px;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  
+  <div class="cover">
+    <div class="cover-badge">IBM SkillsBuild · Data Analytics with AI · 2026</div>
+    <h1>🏥 CareSight <span>AI</span></h1>
+    <div class="cover-tagline">Healthcare Intelligence, Simplified.</div>
+    <p style="color:#bfdbfe;font-size:14px;max-width:580px">
+      An end-to-end interactive healthcare analytics and patient readmission
+      intelligence platform built with Streamlit and Python — delivering
+      exploratory analysis, dynamic visualisations, and ML-powered predictions
+      from a single deployable file.
+    </p>
+    <div class="cover-meta">
+      <div class="cover-chip"><strong>Author:</strong> Anjum</div>
+      <div class="cover-chip"><strong>Programme:</strong> IBM SkillsBuild Internship</div>
+      <div class="cover-chip"><strong>Python:</strong> 3.12.x</div>
+      <div class="cover-chip"><strong>App:</strong> Anjum_CareSightAI.py</div>
+      <div class="cover-chip"><strong>Dataset:</strong> Hospital Patient .csv</div>
+      <div class="cover-chip"><strong>Records:</strong> 984 patients</div>
+    </div>
+  </div>
+
+  <div class="body">
+
+    
+    <div class="section">
+      <div class="kpi-row">
+        <div class="kpi-card">
+          <div class="kpi-label">Patient Records</div>
+          <div class="kpi-value">984</div>
+          <div class="kpi-sub">Across 28 Indian states</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Features</div>
+          <div class="kpi-value">15</div>
+          <div class="kpi-sub">Columns in dataset</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Conditions</div>
+          <div class="kpi-value">14</div>
+          <div class="kpi-sub">Unique medical conditions</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">ML Models</div>
+          <div class="kpi-value">2</div>
+          <div class="kpi-sub">LR + Random Forest</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">App Pages</div>
+          <div class="kpi-value">5</div>
+          <div class="kpi-sub">Interactive Streamlit pages</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Year Range</div>
+          <div class="kpi-value">2022–25</div>
+          <div class="kpi-sub">Admission records</div>
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="section">
+      <div class="section-title"><span class="num">1</span> Abstract</div>
+      <p>
+        CareSight AI is a comprehensive, placement-ready healthcare analytics and patient
+        readmission intelligence platform developed as the capstone project for the IBM
+        SkillsBuild Data Analytics with AI Internship. The platform leverages a hospital
+        patient dataset comprising 984 patient records across 15 attributes to deliver
+        interactive exploratory data analysis, dynamic Plotly visualisations, and
+        machine-learning-based readmission predictions.
+      </p>
+      <p>
+        Two classification models — Logistic Regression and Random Forest — are trained
+        and evaluated using Accuracy, Precision, Recall, F1-Score, and ROC-AUC. The
+        Streamlit-based web application provides five interactive pages: Dashboard,
+        Patient Analytics, AI Insights, Model Performance, and About Project. All
+        results and insights are derived entirely from the supplied dataset without
+        fabrication.
+      </p>
+    </div>
+
+    
+    <div class="section">
+      <div class="section-title"><span class="num">2</span> Problem Statement</div>
+      <p>Hospital readmissions represent one of the most significant challenges in healthcare management. Key problems include:</p>
+      <ul>
+        <li><strong>Financial burden:</strong> Readmissions significantly increase the total cost of care for both patients and providers.</li>
+        <li><strong>Resource strain:</strong> Repeated admissions occupy hospital beds and clinical staff, reducing capacity for new patients.</li>
+        <li><strong>Quality indicator:</strong> High readmission rates indicate suboptimal treatment or discharge planning.</li>
+        <li><strong>Limited predictive tools:</strong> Many facilities lack data-driven tools to identify high-risk patients before discharge.</li>
+        <li><strong>Data silos:</strong> Patient data exists in fragmented systems, making holistic analysis difficult.</li>
+      </ul>
+      <p>
+        CareSight AI addresses these problems by building a unified analytics platform that
+        processes patient admission data, identifies readmission patterns, and predicts
+        individual patient readmission risk using machine learning.
+      </p>
+    </div>
+
+    
+    <div class="section">
+      <div class="section-title"><span class="num">3</span> Objectives</div>
+      <ol>
+        <li>Perform comprehensive EDA to uncover patterns in admissions, readmissions, costs, and outcomes.</li>
+        <li>Build and evaluate ML models (Logistic Regression and Random Forest) for predicting patient readmission.</li>
+        <li>Develop an interactive multi-page Streamlit application with dynamic filtering.</li>
+        <li>Create an AI Insights module enabling interactive readmission risk prediction.</li>
+        <li>Compare model performance using standard evaluation metrics.</li>
+        <li>Present results in a professional, placement-ready format.</li>
+        <li>Ensure full reproducibility from a single Python file and CSV dataset.</li>
+      </ol>
+    </div>
+
+    
+    <div class="section">
+      <div class="section-title"><span class="num">4</span> Dataset &amp; Data Dictionary</div>
+
+      <div class="two-col">
+        <div class="card">
+          <h4>📄 File</h4>
+          <code>Hospital Patient .csv</code><br /><br />
+          <table style="margin:0">
+            <tbody>
+              <tr><td>Records</td><td>984 patients</td></tr>
+              <tr><td>Columns</td><td>15 attributes</td></tr>
+              <tr><td>Target</td><td>Readmission (Yes / No)</td></tr>
+              <tr><td>Years</td><td>2022 – 2025</td></tr>
+              <tr><td>States</td><td>28 Indian states</td></tr>
+              <tr><td>Conditions</td><td>14 unique</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card">
+          <h4>🏥 Medical Conditions Covered</h4>
+          <div style="margin-top:6px">
+            <span class="tag">Heart Disease</span>
+            <span class="tag">Diabetes</span>
+            <span class="tag">Stroke</span>
+            <span class="tag">Cancer</span>
+            <span class="tag">Hypertension</span>
+            <span class="tag">Heart Attack</span>
+            <span class="tag green">Appendicitis</span>
+            <span class="tag green">Fractured Leg/Arm</span>
+            <span class="tag green">Allergic Reaction</span>
+            <span class="tag orange">Respiratory Infection</span>
+            <span class="tag orange">Prostate Cancer</span>
+            <span class="tag purple">Childbirth</span>
+            <span class="tag purple">Kidney Stones</span>
+            <span class="tag purple">Osteoarthritis</span>
+          </div>
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Column</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>ML Use</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Patient_ID</td><td>Integer</td><td>Unique patient identifier</td><td>❌ Excluded</td></tr>
+          <tr><td>Age</td><td>Integer</td><td>Patient age in years</td><td>✅ Feature</td></tr>
+          <tr><td>Gender</td><td>String</td><td>Male / Female</td><td>✅ Feature (encoded)</td></tr>
+          <tr><td>Condition</td><td>String</td><td>Diagnosed medical condition</td><td>✅ Feature (encoded)</td></tr>
+          <tr><td>Medication</td><td>String</td><td>Treatment administered</td><td>❌ Excluded (leakage)</td></tr>
+          <tr><td>Admission_Date</td><td>Date</td><td>DD-MM-YYYY format</td><td>❌ Excluded (derived)</td></tr>
+          <tr><td>Discharge_Date</td><td>Date</td><td>DD-MM-YYYY format</td><td>❌ Excluded (derived)</td></tr>
+          <tr><td>Patient_State</td><td>String</td><td>Indian state of residence</td><td>✅ Feature (encoded)</td></tr>
+          <tr><td>Year_of_Admission</td><td>Integer</td><td>Year of admission</td><td>✅ Feature</td></tr>
+          <tr><td>Length_of_Stay</td><td>Integer</td><td>Days in hospital (derived)</td><td>✅ Feature</td></tr>
+          <tr><td>Readmission</td><td>String</td><td>Yes / No — <strong>Target variable</strong></td><td>🎯 Target</td></tr>
+          <tr><td>Outcome</td><td>String</td><td>Recovered / Stable</td><td>✅ Feature (encoded)</td></tr>
+          <tr><td>Satisfaction</td><td>Integer</td><td>Patient satisfaction score 1–5</td><td>✅ Feature</td></tr>
+          <tr><td>Insurance_Claimed</td><td>String</td><td>Yes / No</td><td>✅ Feature (encoded)</td></tr>
+          <tr><td>Total_Cost</td><td>Integer</td><td>Total hospital cost in ₹</td><td>✅ Feature</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    
+    <div class="section">
+      <div class="section-title"><span class="num">5</span> Data Preprocessing</div>
+
+      <div class="two-col">
+        <div class="card">
+          <h4>🧹 Data Cleaning</h4>
+          <ul style="margin:0;padding-left:16px">
+            <li>Column name whitespace removal via <code>str.strip()</code> — the <code>Medication</code> column had a trailing space in the raw CSV</li>
+            <li>All object-type columns stripped of leading/trailing whitespace</li>
+            <li>Admission_Date and Discharge_Date parsed from <code>DD-MM-YYYY</code> using <code>errors='coerce'</code></li>
+            <li>Numeric coercion: Age, Length_of_Stay, Satisfaction, Total_Cost, Year_of_Admission cast to numeric</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>⚙️ Feature Engineering</h4>
+          <ul style="margin:0;padding-left:16px">
+            <li><strong>Binary target:</strong> <code>Readmission_Binary</code> — Yes→1, No→0</li>
+            <li><strong>Age group binning:</strong> <code>pd.cut()</code> with bins: &lt;18, 18–35, 36–50, 51–65, 65+</li>
+            <li><strong>Label encoding:</strong> <code>LabelEncoder</code> applied to Gender, Condition, Patient_State, Outcome, Insurance_Claimed; separate encoder per column stored for inference reuse</li>
+            <li><strong>Exclusions:</strong> Patient_ID (identifier), Medication (leakage risk), raw dates (replaced by Length_of_Stay)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="section">
+      <div class="section-title"><span class="num">6</span> Key EDA Findings</div>
+
+      <table>
+        <thead>
+          <tr><th>Category</th><th>Finding</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Demographics</td><td>984 patients, ages 25–78, Male and Female, 28 Indian states. Kerala, Delhi, Maharashtra most represented.</td></tr>
+          <tr><td>Highest cost</td><td>Cancer: highest avg cost (~₹25,000), longest avg length of stay.</td></tr>
+          <tr><td>Second highest cost</td><td>Heart Attack: ~₹18,000 avg cost.</td></tr>
+          <tr><td>Lowest cost</td><td>Allergic Reaction: ~₹100 avg cost, shortest stay.</td></tr>
+          <tr><td>Readmission risk</td><td>Heart Attack, Stroke, Heart Disease show highest readmission rates across all conditions.</td></tr>
+          <tr><td>Age &amp; readmission</td><td>Age group 65+ exhibits higher readmission rates than younger groups.</td></tr>
+          <tr><td>Satisfaction (low)</td><td>Stroke and Heart Attack patients report lowest scores (~2/5).</td></tr>
+          <tr><td>Satisfaction (high)</td><td>Allergic Reaction and Fractured Arm patients report highest scores (~5/5).</td></tr>
+          <tr><td>Coverage</td><td>Readmission present across all 14 medical conditions.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    
+    <div class="section">
+      <div class="section-title"><span class="num">7</span> Machine Learning Methodology</div>
+
+      <div class="two-col">
+        <div class="card">
+          <h4>🔵 Logistic Regression</h4>
+          <ul style="margin:0;padding-left:16px;font-size:13px">
+            <li>Linear classifier — interpretable baseline</li>
+            <li><code>max_iter=1000</code>, <code>random_state=42</code></li>
+            <li>Outputs class label + probability</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>🌲 Random Forest</h4>
+          <ul style="margin:0;padding-left:16px;font-size:13px">
+            <li>Ensemble of 100 decision trees</li>
+            <li><code>n_estimators=100</code>, <code>random_state=42</code></li>
+            <li>Handles non-linear patterns; provides feature importance</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="workflow">
+<span class="step">Hospital Patient .csv</span>  <span class="sub">(984 records)</span>
+<span class="arrow">        │</span>
+<span class="arrow">        ▼</span>
+<span class="step">  Data Cleaning</span>
+<span class="sub">  ├─ str.strip() on all column names &amp; object values</span>
+<span class="sub">  ├─ parse Admission/Discharge dates → derive Length_of_Stay</span>
+<span class="sub">  └─ binary-encode target  (Yes → 1, No → 0)</span>
+<span class="arrow">        │</span>
+<span class="arrow">        ▼</span>
+<span class="step">  Feature Engineering</span>
+<span class="sub">  ├─ age-group binning  (&lt;18 · 18-35 · 36-50 · 51-65 · 65+)</span>
+<span class="sub">  ├─ LabelEncoder per categorical column</span>
+<span class="sub">  └─ drop Patient_ID &amp; Medication</span>
+<span class="arrow">        │</span>
+<span class="arrow">        ▼</span>
+<span class="step">  Train / Test Split</span>  <span class="sub">80 % train · 20 % test · stratified · random_state=42</span>
+<span class="arrow">        │</span>
+<span class="arrow">        ▼</span>
+<span class="step">  Model Training</span>
+<span class="sub">  ├─ Logistic Regression  (max_iter=1000)</span>
+<span class="sub">  └─ Random Forest         (n_estimators=100)</span>
+<span class="arrow">        │</span>
+<span class="arrow">        ▼</span>
+<span class="step">  Evaluation</span>
+<span class="sub">  ├─ Accuracy · Precision · Recall · F1 · ROC-AUC</span>
+<span class="sub">  ├─ Confusion Matrix (Plotly heatmap)</span>
+<span class="sub">  ├─ Classification Report</span>
+<span class="sub">  ├─ Feature Importance (RF Gini impurity)</span>
+<span class="sub">  └─ ROC Curves with AUC</span>
+<span class="arrow">        │</span>
+<span class="arrow">        ▼</span>
+<span class="step">  Streamlit App</span>  <span class="sub">→  Dashboard · Analytics · Prediction · Performance · About</span>
+      </div>
+
+      <p style="font-size:13px;color:#57606a;margin-top:6px">
+        <strong>Features used in models:</strong>
+        <code>Age</code> · <code>Gender</code> · <code>Condition</code> · <code>Patient_State</code> · <code>Length_of_Stay</code> · <code>Outcome</code> · <code>Satisfaction</code> · <code>Insurance_Claimed</code> · <code>Total_Cost</code> · <code>Year_of_Admission</code>
+      </p>
+    </div>
+
+    
+    <div class="section">
+      <div class="section-title"><span class="num">8</span> Model Evaluation</div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th>Definition</th>
+            <th>Relevance in Healthcare</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Accuracy</td><td>Proportion of correct predictions</td><td>Overall model correctness</td></tr>
+          <tr><td>Precision</td><td>Of predicted readmissions, how many were correct</td><td>Minimises false alarms</td></tr>
+          <tr><td>Recall</td><td>Of actual readmissions, how many were detected</td><td>Critical — minimises missed readmissions</td></tr>
+          <tr><td>F1-Score</td><td>Harmonic mean of Precision and Recall</td><td>Balanced metric for imbalanced data</td></tr>
+          <tr><td>ROC-AUC</td><td>Model's ability to distinguish between classes</td><td>Overall discriminative power</td></tr>
+        </tbody>
+      </table>
+
+      <div class="box box-blue">
+        <strong>Note on results:</strong> Confusion matrices, classification reports, and ROC curves are computed
+        dynamically at runtime from the dataset. Actual numeric values are generated when the app is executed.
+        Run <code>streamlit run Anjum_CareSightAI.py</code> to view exact metrics.
+        RF is expected to yield slightly higher ROC-AUC due to non-linear pattern capture.
+        Expected top feature importances: Total_Cost, Length_of_Stay, Condition, Age, Satisfaction.
+      </div>
+    </div>
+
+    <hr />
+
+    
+    <div class="section">
+      <div class="section-title"><span class="num">9</span> Application UI — Dashboard Pages</div>
+
+      <p style="color:#57606a;font-size:13px;margin-bottom:16px">
+        The application is structured with a dark navy sidebar for navigation and five distinct pages.
+        Below are detailed walkthroughs of each page with interface illustrations.
+      </p>
+
+      
+      <div class="screenshot-block">
+        <div class="screenshot-titlebar">📊 Page 1 — Dashboard</div>
+        <div class="screenshot-body">
+          <div class="mock-app">
+            <div class="mock-sidebar">
+              <div class="mock-sidebar-title">🏥 CareSight AI</div>
+              <div class="mock-nav-item active">📊 Dashboard</div>
+              <div class="mock-nav-item">🔍 Analytics</div>
+              <div class="mock-nav-item">🤖 AI Insights</div>
+              <div class="mock-nav-item">📈 Performance</div>
+              <div class="mock-nav-item">ℹ️ About</div>
+              <div style="margin-top:10px;font-size:9px;color:#64748b;border-top:1px solid #1e5799;padding-top:8px">
+                📋 984 Records<br />📅 2022–2025<br />🏷️ 14 Conditions<br />🗺️ 28 States
+              </div>
+            </div>
+            <div class="mock-main">
+              <div style="font-size:14px;font-weight:800;color:#0a2342;margin-bottom:8px">📊 CareSight AI — Dashboard</div>
+              <div class="mock-kpi-row">
+                <div class="mock-kpi"><div class="mock-kpi-label">Total Patients</div><div class="mock-kpi-val">984</div></div>
+                <div class="mock-kpi"><div class="mock-kpi-label">Readmission Rate</div><div class="mock-kpi-val">—%</div></div>
+                <div class="mock-kpi"><div class="mock-kpi-label">Avg LOS</div><div class="mock-kpi-val">— days</div></div>
+                <div class="mock-kpi"><div class="mock-kpi-label">Avg Cost</div><div class="mock-kpi-val">₹—</div></div>
+                <div class="mock-kpi"><div class="mock-kpi-label">Avg Satisfaction</div><div class="mock-kpi-val">—/5</div></div>
+              </div>
+              <div class="mock-charts">
+                <div class="mock-chart">
+                  <div class="mock-chart-title">Patients by Condition</div>
+                  <div class="mock-bars">
+                    <div class="mock-bar" style="height:32px;width:10px;background:#1e5799"></div>
+                    <div class="mock-bar" style="height:26px;width:10px;background:#2980b9"></div>
+                    <div class="mock-bar" style="height:22px;width:10px;background:#3498db"></div>
+                    <div class="mock-bar" style="height:18px;width:10px;background:#5dade2"></div>
+                    <div class="mock-bar" style="height:14px;width:10px;background:#85c1e9"></div>
+                    <div class="mock-bar" style="height:10px;width:10px;background:#a9cce3"></div>
+                  </div>
+                </div>
+                <div class="mock-chart">
+                  <div class="mock-chart-title">Readmission Distribution</div>
+                  <div style="display:flex;align-items:center;gap:10px;margin-top:4px">
+                    <div class="mock-donut"></div>
+                    <div style="font-size:9px;color:#374151">
+                      <div>🔵 No Readmission</div>
+                      <div>🔴 Readmitted</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="mock-chart">
+                  <div class="mock-chart-title">Avg Cost by Condition</div>
+                  <div class="mock-bars">
+                    <div class="mock-bar" style="height:36px;width:10px;background:#e67e22"></div>
+                    <div class="mock-bar" style="height:28px;width:10px;background:#f39c12"></div>
+                    <div class="mock-bar" style="height:20px;width:10px;background:#f5b041"></div>
+                    <div class="mock-bar" style="height:14px;width:10px;background:#f8c471"></div>
+                    <div class="mock-bar" style="height:8px;width:10px;background:#fad7a0"></div>
+                  </div>
+                </div>
+                <div class="mock-chart">
+                  <div class="mock-chart-title">Yearly Admission Trend</div>
+                  <div class="mock-line">
+                    <svg>
+                      <polyline points="5,22 30,18 55,12 80,8 95,14" fill="none" stroke="#1e5799" stroke-width="2"></polyline>
+                      <circle cx="5" cy="22" r="2" fill="#1e5799"></circle>
+                      <circle cx="30" cy="18" r="2" fill="#1e5799"></circle>
+                      <circle cx="55" cy="12" r="2" fill="#1e5799"></circle>
+                      <circle cx="80" cy="8" r="2" fill="#1e5799"></circle>
+                      <circle cx="95" cy="14" r="2" fill="#1e5799"></circle>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="screenshot-note">
+          5 KPI cards (Total Patients, Readmission Rate, Avg Length of Stay, Avg Cost, Avg Satisfaction) ·
+          Patients by Condition (horizontal bar) · Readmission donut · Patient Outcomes donut ·
+          Avg Cost by Condition · Avg LOS by Condition · Satisfaction by Condition · Yearly trend line chart.
+          Add actual screenshot as <code>screenshots/dashboard.png</code>.
+        </div>
+      </div>
+
+      
+      <div class="screenshot-block">
+        <div class="screenshot-titlebar">🔍 Page 2 — Patient Analytics</div>
+        <div class="screenshot-body">
+          <div class="mock-app">
+            <div class="mock-sidebar">
+              <div class="mock-sidebar-title">🏥 CareSight AI</div>
+              <div class="mock-nav-item">📊 Dashboard</div>
+              <div class="mock-nav-item active">🔍 Analytics</div>
+              <div class="mock-nav-item">🤖 AI Insights</div>
+              <div class="mock-nav-item">📈 Performance</div>
+              <div class="mock-nav-item">ℹ️ About</div>
+            </div>
+            <div class="mock-main">
+              <div style="font-size:14px;font-weight:800;color:#0a2342;margin-bottom:8px">🔍 Patient Analytics</div>
+              <div style="font-size:10px;font-weight:700;color:#1e5799;margin-bottom:6px;text-transform:uppercase">🎛️ Filter Panel</div>
+              <div class="mock-filters">
+                <div class="mock-filter">📅 Year: All</div>
+                <div class="mock-filter">👤 Gender: All</div>
+                <div class="mock-filter">🏥 Condition: All</div>
+                <div class="mock-filter">🗺️ State: All</div>
+                <div class="mock-filter">🔄 Readmission: All</div>
+                <div class="mock-filter">✅ Outcome: All</div>
+                <div class="mock-filter">🛡️ Insurance: All</div>
+              </div>
+              <div style="font-size:10px;color:#1e5799;font-weight:600;margin-bottom:6px">Showing 984 records after filtering.</div>
+              <div class="mock-kpi-row" style="margin-bottom:8px">
+                <div class="mock-kpi"><div class="mock-kpi-label">Filtered</div><div class="mock-kpi-val" style="font-size:13px">984</div></div>
+                <div class="mock-kpi"><div class="mock-kpi-label">Readmit %</div><div class="mock-kpi-val" style="font-size:13px">—%</div></div>
+                <div class="mock-kpi"><div class="mock-kpi-label">Avg Age</div><div class="mock-kpi-val" style="font-size:13px">— yrs</div></div>
+                <div class="mock-kpi"><div class="mock-kpi-label">Avg LOS</div><div class="mock-kpi-val" style="font-size:13px">—</div></div>
+                <div class="mock-kpi"><div class="mock-kpi-label">Avg Cost</div><div class="mock-kpi-val" style="font-size:13px">₹—</div></div>
+              </div>
+              <div class="mock-charts">
+                <div class="mock-chart"><div class="mock-chart-title">Age Distribution (histogram)</div>
+                  <div class="mock-bars">
+                    <div class="mock-bar" style="height:10px;width:8px;background:#1e5799"></div>
+                    <div class="mock-bar" style="height:20px;width:8px;background:#1e5799"></div>
+                    <div class="mock-bar" style="height:32px;width:8px;background:#1e5799"></div>
+                    <div class="mock-bar" style="height:26px;width:8px;background:#1e5799"></div>
+                    <div class="mock-bar" style="height:18px;width:8px;background:#1e5799"></div>
+                    <div class="mock-bar" style="height:8px;width:8px;background:#1e5799"></div>
+                  </div>
+                </div>
+                <div class="mock-chart"><div class="mock-chart-title">Gender Split (donut)</div>
+                  <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
+                    <div style="width:36px;height:36px;border-radius:50%;border:8px solid #1e5799;border-right-color:#e91e8c"></div>
+                    <div style="font-size:9px">🔵 Male<br />🩷 Female</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="screenshot-note">
+          7 interactive filters (Year, Gender, Condition, State, Readmission, Outcome, Insurance) ·
+          Dynamic KPI row updates · Age distribution histogram · Gender donut ·
+          Readmission rate by Condition · Readmission rate by Age Group ·
+          Cost &amp; LOS box plots · Satisfaction distribution · Insurance pie · Yearly area chart.
+          Add actual screenshot as <code>screenshots/patient_analytics.png</code>.
+        </div>
+      </div>
+
+      
+      <div class="screenshot-block">
+        <div class="screenshot-titlebar">🤖 Page 3 — AI Insights (Readmission Predictor)</div>
+        <div class="screenshot-body">
+          <div class="mock-app">
+            <div class="mock-sidebar">
+              <div class="mock-sidebar-title">🏥 CareSight AI</div>
+              <div class="mock-nav-item">📊 Dashboard</div>
+              <div class="mock-nav-item">🔍 Analytics</div>
+              <div class="mock-nav-item active">🤖 AI Insights</div>
+              <div class="mock-nav-item">📈 Performance</div>
+              <div class="mock-nav-item">ℹ️ About</div>
+            </div>
+            <div class="mock-main">
+              <div style="font-size:14px;font-weight:800;color:#0a2342;margin-bottom:4px">🤖 AI Insights — Readmission Predictor</div>
+              <div style="background:#fff8e1;border:1px solid #f59e0b;border-radius:5px;padding:6px 10px;font-size:10px;color:#78350f;margin-bottom:8px">
+                ⚠️ <strong>Disclaimer:</strong> For educational purposes only. Not medical advice.
+              </div>
+              <div style="font-size:10px;font-weight:700;color:#1e5799;margin-bottom:6px;text-transform:uppercase">🧾 Patient Input Form</div>
+              <div class="mock-form">
+                <div class="mock-field"><div class="mock-field-label">Age</div><div class="mock-field-val">50</div></div>
+                <div class="mock-field"><div class="mock-field-label">Gender</div><div class="mock-field-val">Male</div></div>
+                <div class="mock-field"><div class="mock-field-label">Condition</div><div class="mock-field-val">Heart Disease</div></div>
+                <div class="mock-field"><div class="mock-field-label">Patient State</div><div class="mock-field-val">Kerala</div></div>
+                <div class="mock-field"><div class="mock-field-label">Length of Stay</div><div class="mock-field-val">7 days</div></div>
+                <div class="mock-field"><div class="mock-field-label">Outcome</div><div class="mock-field-val">Stable</div></div>
+                <div class="mock-field"><div class="mock-field-label">Satisfaction</div><div class="mock-field-val">3 / 5</div></div>
+                <div class="mock-field"><div class="mock-field-label">Insurance</div><div class="mock-field-val">Yes</div></div>
+                <div class="mock-field"><div class="mock-field-label">Total Cost</div><div class="mock-field-val">₹12,000</div></div>
+              </div>
+              <div class="mock-btn">🔍 Analyze Readmission</div>
+              <div class="mock-pred-row">
+                <div class="mock-pred yes">
+                  <div class="mock-pred-model">Logistic Regression</div>
+                  <div class="mock-pred-label">⚠️ Likely Readmission</div>
+                  <div class="mock-pred-prob">Probability: computed at runtime</div>
+                </div>
+                <div class="mock-pred no">
+                  <div class="mock-pred-model">Random Forest</div>
+                  <div class="mock-pred-label">✅ No Readmission</div>
+                  <div class="mock-pred-prob">Probability: computed at runtime</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="screenshot-note">
+          10-field patient input form (Age, Gender, Condition, State, LOS, Outcome, Satisfaction, Insurance, Cost, Year) ·
+          Live prediction from both LR and RF showing class label + probability % ·
+          Probability comparison bar chart with 50% threshold line · Prominent healthcare disclaimer.
+          Add actual screenshot as <code>screenshots/ai_insights.png</code>.
+        </div>
+      </div>
+
+      
+      <div class="screenshot-block">
+        <div class="screenshot-titlebar">📈 Page 4 — Model Performance</div>
+        <div class="screenshot-body">
+          <div class="mock-app">
+            <div class="mock-sidebar">
+              <div class="mock-sidebar-title">🏥 CareSight AI</div>
+              <div class="mock-nav-item">📊 Dashboard</div>
+              <div class="mock-nav-item">🔍 Analytics</div>
+              <div class="mock-nav-item">🤖 AI Insights</div>
+              <div class="mock-nav-item active">📈 Performance</div>
+              <div class="mock-nav-item">ℹ️ About</div>
+            </div>
+            <div class="mock-main">
+              <div style="font-size:14px;font-weight:800;color:#0a2342;margin-bottom:8px">📈 Model Performance</div>
+              <div style="font-size:10px;font-weight:700;color:#1e5799;margin-bottom:6px;text-transform:uppercase">📊 Model Comparison Metrics</div>
+              <table style="font-size:10px;margin:0 0 10px 0">
+                <thead><tr><th>Metric</th><th>Logistic Regression</th><th>Random Forest</th></tr></thead>
+                <tbody>
+                  <tr><td>Accuracy</td><td style="color:#1e5799">runtime</td><td style="color:#27ae60">runtime</td></tr>
+                  <tr><td>Precision</td><td style="color:#1e5799">runtime</td><td style="color:#27ae60">runtime</td></tr>
+                  <tr><td>Recall</td><td style="color:#1e5799">runtime</td><td style="color:#27ae60">runtime</td></tr>
+                  <tr><td>F1-Score</td><td style="color:#1e5799">runtime</td><td style="color:#27ae60">runtime</td></tr>
+                  <tr><td>ROC-AUC</td><td style="color:#1e5799">runtime</td><td style="color:#27ae60">runtime</td></tr>
+                </tbody>
+              </table>
+              <div style="display:flex;gap:10px">
+                <div>
+                  <div style="font-size:10px;font-weight:700;color:#374151;margin-bottom:4px">Confusion Matrix — LR</div>
+                  <div class="mock-cm">
+                    <div class="mock-cm-cell" style="background:#1e5799">TN</div>
+                    <div class="mock-cm-cell" style="background:#5dade2">FP</div>
+                    <div class="mock-cm-cell" style="background:#5dade2">FN</div>
+                    <div class="mock-cm-cell" style="background:#1e5799">TP</div>
+                  </div>
+                </div>
+                <div>
+                  <div style="font-size:10px;font-weight:700;color:#374151;margin-bottom:4px">Confusion Matrix — RF</div>
+                  <div class="mock-cm">
+                    <div class="mock-cm-cell" style="background:#27ae60">TN</div>
+                    <div class="mock-cm-cell" style="background:#82e0aa">FP</div>
+                    <div class="mock-cm-cell" style="background:#82e0aa">FN</div>
+                    <div class="mock-cm-cell" style="background:#27ae60">TP</div>
+                  </div>
+                </div>
+                <div style="flex:1">
+                  <div style="font-size:10px;font-weight:700;color:#374151;margin-bottom:4px">ROC Curves</div>
+                  <div style="background:#fff;border-radius:5px;padding:6px">
+                    <svg style="width:100%;height:50px">
+                      <line x1="5" y1="55" x2="95" y2="5" stroke="#ddd" stroke-width="1"></line>
+                      <polyline points="5,55 20,40 40,28 65,18 95,5" fill="none" stroke="#1e5799" stroke-width="2"></polyline>
+                      <polyline points="5,55 25,36 50,22 75,14 95,5" fill="none" stroke="#27ae60" stroke-width="2"></polyline>
+                      <text x="30" y="58" font-size="6" fill="#1e5799">LR</text>
+                      <text x="55" y="58" font-size="6" fill="#27ae60">RF</text>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="screenshot-note">
+          Side-by-side metrics table (Accuracy, Precision, Recall, F1, ROC-AUC) · Grouped bar chart (LR vs RF) ·
+          Plotly confusion matrices (heatmaps) · Full classification reports · Random Forest feature importance
+          (horizontal bar — Gini impurity) · ROC curves with AUC annotations.
+          Add actual screenshot as <code>screenshots/model_performance.png</code>.
+        </div>
+      </div>
+
+    </div>
+
+    
+    <div class="section">
+      <div class="section-title"><span class="num">10</span> Technology Stack</div>
+      <table>
+        <thead><tr><th>Layer</th><th>Technology</th><th>Version</th><th>Role</th></tr></thead>
+        <tbody>
+          <tr><td>Language</td><td>Python</td><td>3.12.x</td><td>Core runtime</td></tr>
+          <tr><td>Web Framework</td><td>Streamlit</td><td>≥ 1.32</td><td>Multi-page interactive UI</td></tr>
+          <tr><td>Data Processing</td><td>Pandas</td><td>≥ 2.0</td><td>DataFrames, cleaning, aggregation</td></tr>
+          <tr><td>Numerical</td><td>NumPy</td><td>≥ 1.24</td><td>Array operations</td></tr>
+          <tr><td>Visualisation</td><td>Plotly</td><td>≥ 5.18</td><td>Interactive charts (bar, pie, box, line, ROC)</td></tr>
+          <tr><td>Machine Learning</td><td>scikit-learn</td><td>≥ 1.3</td><td>LR, RF, LabelEncoder, metrics</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    
+    <div class="section">
+      <div class="section-title"><span class="num">11</span> Installation &amp; Run Instructions</div>
+
+      <p><strong>Prerequisites:</strong> Python 3.12.x · pip (bundled with Python)</p>
+
+      <p><strong>Step 1 — Place all files in one folder:</strong></p>
+      <pre>your-folder/
+├── Anjum_CareSightAI.py          ← main app
+├── <span class="s">Hospital Patient .csv</span>         ← exact filename (space before .csv)
+├── requirements.txt
+└── README.md</pre>
+
+      <p><strong>Step 2 — Install dependencies:</strong></p>
+      <pre><span class="k">pip</span> install <span class="n">-r</span> requirements.txt</pre>
+
+      <p><strong>Step 3 — Launch the application:</strong></p>
+      <pre><span class="k">streamlit</span> run Anjum_CareSightAI.py</pre>
+
+      <div class="box box-green">
+        The app opens automatically at <strong>http://localhost:8501</strong>.
+        All five pages are accessible via the dark navy sidebar navigation.
+      </div>
+    </div>
+
+    
+    <div class="section">
+      <div class="section-title"><span class="num">12</span> Project File Structure</div>
+      <pre>project/
+├── <span class="n">Anjum_CareSightAI.py</span>              <span class="c">← Single-file Streamlit application</span>
+├── <span class="s">Hospital Patient .csv</span>             <span class="c">← Dataset (984 patient records, 15 columns)</span>
+├── requirements.txt                  <span class="c">← streamlit, pandas, numpy, plotly, scikit-learn</span>
+├── README.md                         <span class="c">← GitHub portfolio README</span>
+├── <span class="n">Anjum_CareSightAI_ProjectReport.docx</span> <span class="c">← Full project report</span>
+└── screenshots/                      <span class="c">← UI screenshots</span>
+    ├── dashboard.png
+    ├── patient_analytics.png
+    ├── ai_insights.png
+    └── model_performance.png</pre>
+    </div>
+
+    
+    <div class="section">
+      <div class="section-title"><span class="num">13</span> Limitations</div>
+      <table>
+        <thead><tr><th>Limitation</th><th>Detail</th></tr></thead>
+        <tbody>
+          <tr><td>Synthetic dataset</td><td>Educational/synthetic data — not sourced from a real hospital EHR system</td></tr>
+          <tr><td>No clinical validation</td><td>Models have not been validated medically; not suitable for clinical use</td></tr>
+          <tr><td>No feature scaling</td><td>StandardScaler not applied to Logistic Regression inputs</td></tr>
+          <tr><td>Class imbalance</td><td>SMOTE / <code>class_weight</code> not used — may affect minority-class recall</td></tr>
+          <tr><td>Medication excluded</td><td>May contain useful predictive signal; excluded to avoid leakage</td></tr>
+          <tr><td>No real-time data</td><td>Static CSV only; no live database or API connectivity</td></tr>
+          <tr><td>Sample size</td><td>984 records is small by clinical ML standards; limits generalisation</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    
+    <div class="section">
+      <div class="section-title"><span class="num">14</span> Future Scope</div>
+      <div class="two-col">
+        <div class="card">
+          <h4>🤖 Advanced ML</h4>
+          <ul style="margin:0;padding-left:16px;font-size:13px">
+            <li>XGBoost, LightGBM, Neural Networks, LSTM</li>
+            <li>Hyperparameter optimisation (Optuna / GridSearchCV)</li>
+            <li>SHAP explainability for per-patient predictions</li>
+            <li>Class imbalance handling via SMOTE</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>🏥 Data &amp; Integration</h4>
+          <ul style="margin:0;padding-left:16px;font-size:13px">
+            <li>Real hospital EHR / FHIR API integration</li>
+            <li>Geospatial choropleth maps by Indian state</li>
+            <li>Multi-language support</li>
+            <li>Automated PDF report export from app</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>☁️ Deployment</h4>
+          <ul style="margin:0;padding-left:16px;font-size:13px">
+            <li>Docker containerisation for reproducibility</li>
+            <li>Streamlit Cloud public deployment</li>
+            <li>IBM Cloud / CI-CD pipeline</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>📊 Analytics</h4>
+          <ul style="margin:0;padding-left:16px;font-size:13px">
+            <li>Real-time streaming dashboard</li>
+            <li>Predictive cost modelling</li>
+            <li>Population health risk stratification</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="section">
+      <div class="section-title"><span class="num">15</span> Ethical Considerations</div>
+      <table>
+        <thead><tr><th>Principle</th><th>Application</th></tr></thead>
+        <tbody>
+          <tr><td>Patient Privacy</td><td>Real deployments must comply with HIPAA, GDPR, India's DPDP Act. This project uses anonymised sample data only.</td></tr>
+          <tr><td>Algorithmic Bias</td><td>ML may perpetuate historical biases. Demographic fairness must be assessed before clinical deployment.</td></tr>
+          <tr><td>Transparency</td><td>Feature importance and probability scores support model interpretability.</td></tr>
+          <tr><td>Non-maleficence</td><td>Predictions are clearly labelled as non-clinical. Disclaimer displayed prominently throughout the app.</td></tr>
+          <tr><td>Human Oversight</td><td>AI is intended to augment, not replace, clinical judgment.</td></tr>
+          <tr><td>Informed Consent</td><td>Any real deployment must inform patients about AI-assisted decision support.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    
+    <div class="section">
+      <div class="box box-yellow">
+        <strong>⚕️ Healthcare Disclaimer</strong><br /><br />
+        This project is intended for <strong>educational and analytical purposes only</strong>.
+        Predictions generated by the models are based on historical sample data and
+        <strong>do not constitute medical diagnosis or clinical advice</strong>.
+        The dataset used is synthetic and educational in nature — it does not represent
+        real patient records from any hospital or healthcare system.
+        Always consult a qualified healthcare professional for any medical decisions.
+        This platform must not be used in any clinical, diagnostic, or treatment context.
+      </div>
+    </div>
+
+    
+    <div class="section">
+      <div class="section-title"><span class="num">17</span> Conclusion</div>
+      <p>
+        CareSight AI successfully demonstrates the end-to-end application of data analytics
+        and machine learning to healthcare readmission prediction. The platform transforms a
+        984-patient hospital dataset into a fully interactive, multi-page Streamlit web
+        application delivering:
+      </p>
+      <ul>
+        <li>15+ interactive Plotly visualisations across the Dashboard and Patient Analytics pages</li>
+        <li>A 7-filter dynamic analytics explorer with live KPI refresh</li>
+        <li>An AI readmission predictor using Logistic Regression and Random Forest</li>
+        <li>Detailed model evaluation with confusion matrices, ROC curves, and feature importance</li>
+        <li>A professional, placement-ready Streamlit UI deployable from a single Python file</li>
+      </ul>
+      <p>
+        The project meets all stated IBM SkillsBuild internship objectives and can be fully
+        reproduced by any evaluator using:
+        <code>streamlit run Anjum_CareSightAI.py</code>
+      </p>
+    </div>
+
+    
+    <div class="section">
+      <div class="section-title"><span class="num">18</span> References</div>
+      <ol class="ref-list">
+        <li><span class="ref-num">1.</span> Streamlit Documentation. <a href="https://docs.streamlit.io" style="color:#1e5799">https://docs.streamlit.io</a></li>
+        <li><span class="ref-num">2.</span> Pedregosa et al. scikit-learn: Machine Learning in Python. JMLR 12, pp. 2825–2830, 2011.</li>
+        <li><span class="ref-num">3.</span> Plotly Python Documentation. <a href="https://plotly.com/python" style="color:#1e5799">https://plotly.com/python</a></li>
+        <li><span class="ref-num">4.</span> Pandas Documentation. <a href="https://pandas.pydata.org" style="color:#1e5799">https://pandas.pydata.org</a></li>
+        <li><span class="ref-num">5.</span> Breiman, L. (2001). Random Forests. Machine Learning, 45, 5–32.</li>
+        <li><span class="ref-num">6.</span> Cox, D.R. (1958). Regression analysis of binary sequences. Journal of the Royal Statistical Society.</li>
+        <li><span class="ref-num">7.</span> IBM SkillsBuild. <a href="https://skillsbuild.org" style="color:#1e5799">https://skillsbuild.org</a></li>
+        <li><span class="ref-num">8.</span> WHO. Health Data Principles, 2019.</li>
+        <li><span class="ref-num">9.</span> Hastie, Tibshirani, Friedman. The Elements of Statistical Learning. Springer, 2009.</li>
+      </ol>
+    </div>
+
+  </div>
+
+  <div class="doc-footer">
+    CareSight AI — Interactive Healthcare Analytics &amp; Patient Readmission Intelligence Platform<br />
+    IBM SkillsBuild Data Analytics with AI Internship · 2026 · Submitted by <strong>Anjum</strong><br />
+    <span style="color:#d1d5db">——————</span><br />
+    Made with IBM Bob
+  </div>
+
+</div>
+</body>
+</html>
