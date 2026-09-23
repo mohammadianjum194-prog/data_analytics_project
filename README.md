@@ -88,14 +88,6 @@ project/
 
 </details>
 
----
-
-
-
-
-
----
-
 ## ✨ Features
 
 | Page | Highlights |
