@@ -90,31 +90,9 @@ project/
 
 ---
 
-## 🖥️ Application Screenshots
+]
 
-> **To add screenshots:** run the app (`streamlit run Anjum_CareSightAI.py`), capture each page, and save to the `screenshots/` folder using the filenames below.
 
-### 📊 Dashboard
-![Dashboard](screenshots/dashboard.png)
-*KPI summary cards, condition-wise patient distribution, readmission donut, cost & length-of-stay breakdowns, and yearly admission trend.*
-
----
-
-### 🔍 Patient Analytics
-![Patient Analytics](screenshots/patient_analytics.png)
-*Seven interactive filters (Year, Gender, Condition, State, Readmission, Outcome, Insurance) with dynamically updated charts — age distribution, gender split, cost & LOS box plots, and more.*
-
----
-
-### 🤖 AI Insights — Readmission Predictor
-![AI Insights](screenshots/ai_insights.png)
-*Patient input form with live readmission prediction from both Logistic Regression and Random Forest, showing predicted class labels, probability percentages, and a side-by-side probability bar chart.*
-
----
-
-### 📈 Model Performance
-![Model Performance](screenshots/model_performance.png)
-*Side-by-side model comparison table (Accuracy, Precision, Recall, F1, ROC-AUC), grouped bar chart, Plotly confusion matrices, full classification reports, Random Forest feature importance, and ROC curves.*
 
 ---
 
