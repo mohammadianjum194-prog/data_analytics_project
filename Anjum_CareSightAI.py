@@ -937,7 +937,7 @@ elif page == "ℹ️ About Project":
                 <b>Programme:</b> IBM SkillsBuild<br>
                 <b>Domain:</b> Data Analytics with AI<br>
                 <b>Project:</b> CareSight AI<br>
-                <b>Year:</b> 2024–25
+                <b>Year:</b> 2026–27
             </div>
         </div>
         """, unsafe_allow_html=True)
